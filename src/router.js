@@ -5,6 +5,10 @@ var _ = require('underscore')
 var low = require('lowdb')
 var utils = require('./utils')
 
+//*FILEUPLOADSUPPORT*
+multiparty = require('connect-multiparty');
+multipartyMiddleware = multiparty();
+
 low.mixin(require('underscore-db'))
 low.mixin(require('underscore.inflections'))
 low.mixin({createId: utils.createId})
@@ -203,6 +207,9 @@ module.exports = function(source) {
     .delete(destroy)
 
   router.get('/:parent/:parentId/:resource', list)
+
+  //*FILEUPLOADSUPPORT*
+  router.post('/api/user/uploads', multipartyMiddleware, uploadFile);
 
   return router
 }
